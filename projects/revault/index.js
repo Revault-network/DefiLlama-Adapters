@@ -13,19 +13,18 @@ async function tvl(timestamp, block) {
     target: REVA_CHEF,
   }));
 
-	const tokenInfos = await sdk.api.abi.multiCall({
+	const tokenInfos = (await sdk.api.abi.multiCall({
 		abi: REVA_CHEF_ABI['tokens'],
     calls,
 		block: block,
     chain: "bsc",
-	});
+	})).output;
 
-  const balances = tokenInfos["output"].map((response) => ({
-    [`bsc:${response.input.params[0]}`]: response.output.tvlBusd
-  }));
-	console.log(balances);
+  const balances = {};
+  tokenInfos.forEach(function (response) {
+    balances[`bsc:${response.input.params[0]}`] = response.output.totalPrincipal;
+  });
 	
-  return { "bsc:0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16" : "30000000" };
 	return balances;
 }
 
