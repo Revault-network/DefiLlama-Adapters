@@ -13,32 +13,32 @@ async function tvl(timestamp, block) {
     target: REVA_CHEF,
   }));
 
-	const tokenInfos = (await sdk.api.abi.multiCall({
-		abi: REVA_CHEF_ABI['tokens'],
+  const tokenInfos = (await sdk.api.abi.multiCall({
+    abi: REVA_CHEF_ABI['tokens'],
     calls,
-		block: block,
+    block: block,
     chain: "bsc",
-	})).output;
+  })).output;
 
   const balances = {};
   tokenInfos.forEach(function (response) {
     balances[`bsc:${response.input.params[0]}`] = response.output.totalPrincipal;
   });
-	
-	return balances;
+  
+  return balances;
 }
 
 /*
 
-	const tokenInfo = await revaChefContract.tokens(token.address);
-	const totalTokenPrincipal = tokenInfo.totalPrincipal;
-	const tokenToBusdRate = await zapContract.getBUSDValue(
-		token.address,
-		BigNumber.from("10").pow(tokenDecimals),
-	);
-	const tvlBusd = totalTokenPrincipal
-		.mul(tokenToBusdRate)
-		.div(BigNumber.from("10").pow(tokenDecimals));
+  const tokenInfo = await revaChefContract.tokens(token.address);
+  const totalTokenPrincipal = tokenInfo.totalPrincipal;
+  const tokenToBusdRate = await zapContract.getBUSDValue(
+    token.address,
+    BigNumber.from("10").pow(tokenDecimals),
+  );
+  const tvlBusd = totalTokenPrincipal
+    .mul(tokenToBusdRate)
+    .div(BigNumber.from("10").pow(tokenDecimals));
 
 }
 
@@ -77,7 +77,7 @@ module.exports = {
   token: 'REVA',
   //category: "?",
   start: 1634150000,        // 13th of October, 2021
-	bsc: {
-		tvl,
+  bsc: {
+    tvl,
   },
 }
